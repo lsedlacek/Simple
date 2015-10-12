@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Easy.Monad
+namespace Simple.Monad
 {
     public class MaybeTests
     {

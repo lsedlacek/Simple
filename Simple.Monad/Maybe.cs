@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Easy.Monad
+namespace Simple.Monad
 {
     public static class Maybe
     {

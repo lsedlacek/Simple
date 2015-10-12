@@ -7,8 +7,8 @@
     <ProjectGuid>{48C28917-6CC5-42D4-B062-5110458D8520}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Easy.Monad</RootNamespace>
-    <AssemblyName>Easy.Monad</AssemblyName>
+    <RootNamespace>Simple.Monad</RootNamespace>
+    <AssemblyName>Simple.Monad</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

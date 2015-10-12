@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Easy.Monad
+namespace Simple.Monad
 {
     public class MaybeCollectionExtensionsTests
     {

@@ -1,1 +1,1 @@
-# Easy
+# Simple

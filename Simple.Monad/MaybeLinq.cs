@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Easy.Monad
+namespace Simple.Monad
 {
     public static class MaybeLinq
     {
