@@ -25,9 +25,16 @@ namespace Simple.Monad
                 : Nothing;
         }
 
-        public static Maybe<T> Join<T>(Maybe<Maybe<T>> wrapped)
+        public static Maybe<T> Join<T>(this Maybe<Maybe<T>> wrapped)
         {
             return wrapped.Bind(x => x);
+        }
+
+        public static T OrElse<T>(this Maybe<T> maybe, T value)
+        {
+            return maybe.HasValue
+                ? maybe.UnsafeValue
+                : value;
         }
     }
 
@@ -49,6 +56,15 @@ namespace Simple.Monad
         public bool HasValue { get; }
         private T Value { get; }
 
+        public T UnsafeValue
+        {
+            get
+            {
+                if (HasValue) return Value;
+                throw new InvalidOperationException("Nothing has no value.");
+            }
+        }
+
         public Maybe<TResult> Bind<TResult>(Func<T, Maybe<TResult>> func)
         {
             return HasValue
@@ -60,13 +76,20 @@ namespace Simple.Monad
 
         public int CompareTo(Maybe<T> other)
         {
-            return HasValue
-                ? other.HasValue
-                    ? Comparer<T>.Default.Compare(Value, other.Value)
-                    : 1
-                : other.HasValue
-                    ? -1
-                    : 0;
+            var flag = (HasValue ? 1 : 0)
+                | (other.HasValue ? 2 : 0);
+
+            switch (flag)
+            {
+                case 0: // both nothing
+                    return 0;
+                case 1: // first something
+                    return 1;
+                case 2: // second something
+                    return -1;
+                default: // case 3: // both something
+                    return Comparer<T>.Default.Compare(Value, other.Value);
+            }
         }
 
         public static bool operator >(Maybe<T> left, Maybe<T> right)
@@ -95,9 +118,19 @@ namespace Simple.Monad
 
         public bool Equals(Maybe<T> other)
         {
-            return HasValue
-                ? other.HasValue && EqualityComparer<T>.Default.Equals(Value, other.Value)
-                : !other.HasValue;
+            var flag = (HasValue ? 1 : 0)
+                | (other.HasValue ? 2 : 0);
+
+            switch (flag)
+            {
+                case 0: // both nothing
+                    return true;
+                case 1: // first something
+                case 2: // second something
+                    return false;
+                default: // case 3: // both something
+                    return EqualityComparer<T>.Default.Equals(Value, other.Value);
+            }
         }
 
         public override bool Equals(object obj)

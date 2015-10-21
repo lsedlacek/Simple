@@ -116,5 +116,23 @@ namespace Simple.Monad
             var comparison = maybeLeft.CompareTo(maybeRight);
             Assert.Equal(-1, comparison);
         }
+
+        [Fact]
+        public void OrElse_WithValue_ReturnsValue()
+        {
+            var maybe = Maybe.Return(3);
+
+            var result = maybe.OrElse(4);
+            Assert.Equal(result, 3);
+        }
+
+        [Fact]
+        public void OrElse_WithNothing_ReturnsElse()
+        {
+            Maybe<int> maybe = Maybe.Nothing;
+
+            var result = maybe.OrElse(2);
+            Assert.Equal(2, result);
+        }
     }
 }
