@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Monad", "Simple.Monad\Simple.Monad.csproj", "{48C28917-6CC5-42D4-B062-5110458D8520}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Pattern", "Simple.Pattern\Simple.Pattern.csproj", "{5090220A-0215-49A8-8E48-DADD89A7BF2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{48C28917-6CC5-42D4-B062-5110458D8520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48C28917-6CC5-42D4-B062-5110458D8520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48C28917-6CC5-42D4-B062-5110458D8520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5090220A-0215-49A8-8E48-DADD89A7BF2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5090220A-0215-49A8-8E48-DADD89A7BF2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5090220A-0215-49A8-8E48-DADD89A7BF2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5090220A-0215-49A8-8E48-DADD89A7BF2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
