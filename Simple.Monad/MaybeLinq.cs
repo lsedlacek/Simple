@@ -2,22 +2,17 @@
 
 namespace Simple.Monad
 {
-    public static class MaybeLinq
+    public static partial class Maybe
     {
         public static Maybe<TResult> SelectMany<TSource, TResult>(this Maybe<TSource> source,
-            Func<TSource, Maybe<TResult>> selector)
-        {
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-            return source.Bind(selector);
-        }
+            Func<TSource, Maybe<TResult>> selector) => source.Bind(selector);
 
         public static Maybe<TResult> Select<TSource, TResult>(this Maybe<TSource> source,
             Func<TSource, TResult> selector)
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            return source.Bind(x => Maybe.Return(selector(x)));
+            return source.Bind(x => Return(selector(x)));
         }
 
         public static Maybe<TResult> SelectMany<TSource, TInner, TResult>(
@@ -35,7 +30,7 @@ namespace Simple.Monad
         {
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return source.Bind(x => predicate(x) ? source : Maybe.Nothing);
+            return source.Bind(x => predicate(x) ? source : Nothing);
         }
     }
 }

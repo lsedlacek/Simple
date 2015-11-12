@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Simple.Monad
 {
-    public static class Maybe
+    public static partial class Maybe
     {
         public struct MaybeNothing
         { }
@@ -67,6 +67,8 @@ namespace Simple.Monad
 
         public Maybe<TResult> Bind<TResult>(Func<T, Maybe<TResult>> func)
         {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+
             return HasValue
                 ? func(Value)
                 : default(Maybe<TResult>);
