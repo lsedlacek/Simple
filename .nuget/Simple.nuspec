@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Simple</id>
+    <version>$version$</version>
+    <authors>lsedlacek</authors>
+    <owners>lsedlacek</owners>
+    <licenseUrl>https://github.com/lsedlacek/Simple/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/lsedlacek/Simple</projectUrl>
+    <!-- <iconUrl/> -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A simple utility library</description>
+    <!-- <releaseNotes/> -->
+    <copyright>Copyright © lsedlacek 2015</copyright>
+    <tags>simple maybe monad tinyset operator pattern functional linq</tags>
+  </metadata>
+  <files>
+      <file src="..\Simple\bin\Release\Simple.dll" target="lib\net45" />
+	</files>
+</package>

@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48C28917-6CC5-42D4-B062-5110458D8520}</ProjectGuid>
+    <ProjectGuid>{35DC4BCC-102C-4770-8AED-4391999C3874}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simple.Monad</RootNamespace>
-    <AssemblyName>Simple.Monad</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Simple</RootNamespace>
+    <AssemblyName>SimpleTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,15 +56,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Maybe.cs" />
-    <Compile Include="MaybeCollectionExtensions.cs" />
-    <Compile Include="MaybeCollectionExtensionsTests.cs" />
-    <Compile Include="MaybeLinq.cs" />
-    <Compile Include="MaybeTests.cs" />
+    <Compile Include="Math\CombinationTests.cs" />
+    <Compile Include="Math\OperatorTests.cs" />
+    <Compile Include="Misc\EnumExtensionsTests.cs" />
+    <Compile Include="Monad\MaybeCollectionExtensionsTests.cs" />
+    <Compile Include="Monad\MaybeTests.cs" />
+    <Compile Include="Pattern\ValuePatternTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simple\Simple.csproj">
+      <Project>{fe1a4df8-9c16-48e5-a17c-8bd4dcad12ec}</Project>
+      <Name>Simple</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
