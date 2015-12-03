@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <package >
   <metadata>
     <id>Simple</id>
@@ -9,9 +9,9 @@
     <projectUrl>https://github.com/lsedlacek/Simple</projectUrl>
     <!-- <iconUrl/> -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A simple utility library</description>
+    <description>A simple .NET utility library</description>
     <!-- <releaseNotes/> -->
-    <copyright>Copyright © lsedlacek 2015</copyright>
+    <copyright>Copyright &#169; lsedlacek 2015</copyright>
     <tags>simple maybe monad tinyset operator pattern functional linq</tags>
   </metadata>
   <files>
