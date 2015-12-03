@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
-namespace Simple.Extensions
+namespace Simple.Misc
 {
     public static class EnumExtensions
     {

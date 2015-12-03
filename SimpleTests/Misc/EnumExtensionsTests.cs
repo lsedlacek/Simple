@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace Simple.Extensions
+namespace Simple.Misc
 {
     public class EnumExtensionsTests
     {
