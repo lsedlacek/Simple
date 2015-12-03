@@ -36,6 +36,23 @@ namespace Simple.Monad
                 ? maybe.UnsafeValue
                 : value;
         }
+
+        public static T OrElse<T>(this Maybe<T> maybe, Func<T> factory)
+        {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+
+            return maybe.HasValue
+                ? maybe.UnsafeValue
+                : factory();
+        }
+
+        public static IEnumerable<T> AsEnumerable<T>(this Maybe<T> maybe)
+        {
+            if (maybe.HasValue)
+            {
+                yield return maybe.UnsafeValue;
+            }
+        }
     }
 
     public struct Maybe<T> : IEquatable<Maybe<T>>, IComparable<Maybe<T>>
