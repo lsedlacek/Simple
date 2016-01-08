@@ -11,7 +11,7 @@ namespace Simple.Monad
 
             using (var enumerator = source.GetEnumerator())
             {
-                if (!enumerator.MoveNext()) return Nothing;
+                if (!enumerator.MoveNext()) return Nothing<T>();
 
                 var value = enumerator.Current;
                 if (!enumerator.MoveNext())
@@ -31,7 +31,7 @@ namespace Simple.Monad
             {
                 return enumerator.MoveNext()
                     ? Return(enumerator.Current)
-                    : Nothing;
+                    : Nothing<T>();
             }
         }
 
@@ -41,7 +41,7 @@ namespace Simple.Monad
 
             return dictionary.ContainsKey(key)
                 ? Return(dictionary[key])
-                : Nothing;
+                : Nothing<TValue>();
         }
     }
 }

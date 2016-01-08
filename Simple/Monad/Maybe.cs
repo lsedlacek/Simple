@@ -5,16 +5,13 @@ namespace Simple.Monad
 {
     public static partial class Maybe
     {
-        public struct MaybeNothing
-        { }
-
-        public static readonly MaybeNothing Nothing = default(MaybeNothing);
+        public static Maybe<T> Nothing<T>() => default(Maybe<T>);
 
         public static Maybe<T> Return<T>(T value)
         {
             return value != null
                 ? new Maybe<T>(value)
-                : Nothing;
+                : Nothing<T>();
         }
 
         public static Maybe<T> Return<T>(T? value)
@@ -22,12 +19,12 @@ namespace Simple.Monad
         {
             return value.HasValue
                 ? new Maybe<T>(value.Value)
-                : Nothing;
+                : Nothing<T>();
         }
 
         public static Maybe<T> Join<T>(this Maybe<Maybe<T>> wrapped)
         {
-            return wrapped.Bind(x => x);
+            return wrapped.SelectMany(x => x);
         }
 
         public static T OrElse<T>(this Maybe<T> maybe, T value)
@@ -65,11 +62,6 @@ namespace Simple.Monad
             Value = value;
         }
 
-        public static implicit operator Maybe<T>(Maybe.MaybeNothing dummy)
-        {
-            return default(Maybe<T>);
-        }
-
         public bool HasValue { get; }
         private T Value { get; }
 
@@ -80,15 +72,6 @@ namespace Simple.Monad
                 if (HasValue) return Value;
                 throw new InvalidOperationException("Nothing has no value.");
             }
-        }
-
-        public Maybe<TResult> Bind<TResult>(Func<T, Maybe<TResult>> func)
-        {
-            if (func == null) throw new ArgumentNullException(nameof(func));
-
-            return HasValue
-                ? func(Value)
-                : default(Maybe<TResult>);
         }
 
         #region Comparison
