@@ -33,21 +33,21 @@ namespace Simple.Monad
         }
 
         [Fact]
-        public void Bind_WithValue_RunsFunc()
+        public void SelectMany_WithValue_RunsFunc()
         {
             int i = 0;
             var maybe = Maybe.Return(1);
-            maybe.Bind(x => Maybe.Return(i = x));
+            maybe.SelectMany(x => Maybe.Return(i = x));
 
             Assert.Equal(1, i);
         }
 
         [Fact]
-        public void Bind_WithoutValue_DoesNotRunFunc()
+        public void SelectMany_WithoutValue_DoesNotRunFunc()
         {
             int i = 0;
             var maybe = Maybe.Return((int?)null);
-            maybe.Bind(x => Maybe.Return(i = x));
+            maybe.SelectMany(x => Maybe.Return(i = x));
 
             Assert.Equal(0, i);
         }
@@ -129,10 +129,27 @@ namespace Simple.Monad
         [Fact]
         public void OrElse_WithNothing_ReturnsElse()
         {
-            Maybe<int> maybe = Maybe.Nothing;
+            var maybe = Maybe.Nothing<int>();
 
             var result = maybe.OrElse(2);
             Assert.Equal(2, result);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 1)]
+        [InlineData(2, null, 2)]
+        [InlineData(null, 3, 3)]
+        [InlineData(null, null, null)]
+        public void Concat_WithSuppliedValues_FirstIfHasValueOtherwiseSecond(int? a, int? b, int? expected)
+        {
+            var ma = Maybe.Return(a);
+            var mb = Maybe.Return(b);
+
+            var mexpected = Maybe.Return(expected);
+
+            var result = ma.Concat(mb);
+
+            Assert.Equal(mexpected, result);
         }
     }
 }
