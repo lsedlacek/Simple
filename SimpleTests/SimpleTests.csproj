@@ -59,6 +59,7 @@
     <Compile Include="Math\CombinationTests.cs" />
     <Compile Include="Math\OperatorTests.cs" />
     <Compile Include="Misc\EnumExtensionsTests.cs" />
+    <Compile Include="Misc\RangeTests.cs" />
     <Compile Include="Monad\MaybeCollectionExtensionsTests.cs" />
     <Compile Include="Monad\MaybeTests.cs" />
     <Compile Include="Monad\ResultTests.cs" />

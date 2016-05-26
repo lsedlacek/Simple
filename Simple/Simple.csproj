@@ -44,6 +44,7 @@
     <Compile Include="Math\Operator.cs" />
     <Compile Include="Math\TinySet.cs" />
     <Compile Include="Misc\EnumExtensions.cs" />
+    <Compile Include="Misc\Range.cs" />
     <Compile Include="Monad\Maybe.cs" />
     <Compile Include="Monad\MaybeCollectionExtensions.cs" />
     <Compile Include="Monad\MaybeLinq.cs" />
