@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Simple.Monad
 {
-    public static partial class Maybe
+    public static class MaybeCollectionExtensions
     {
         public static Maybe<T> SingleOrNothing<T>(this IEnumerable<T> source)
         {
@@ -11,12 +11,12 @@ namespace Simple.Monad
 
             using (var enumerator = source.GetEnumerator())
             {
-                if (!enumerator.MoveNext()) return Nothing<T>();
+                if (!enumerator.MoveNext()) return Maybe<T>.Nothing;
 
                 var value = enumerator.Current;
                 if (!enumerator.MoveNext())
                 {
-                    return Return(value);
+                    return Maybe.Return(value);
                 }
 
                 throw new InvalidOperationException("More than one element in sequence.");
@@ -30,18 +30,18 @@ namespace Simple.Monad
             using (var enumerator = source.GetEnumerator())
             {
                 return enumerator.MoveNext()
-                    ? Return(enumerator.Current)
-                    : Nothing<T>();
+                    ? Maybe.Return(enumerator.Current)
+                    : Maybe<T>.Nothing;
             }
         }
 
-        public static Maybe<TValue> GetOrNothing<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        public static Maybe<TValue> GetOrNothing<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
         {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             return dictionary.ContainsKey(key)
-                ? Return(dictionary[key])
-                : Nothing<TValue>();
+                ? Maybe.Return(dictionary[key])
+                : Maybe<TValue>.Nothing;
         }
     }
 }

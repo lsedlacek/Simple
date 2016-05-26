@@ -3,36 +3,30 @@ using System.Collections.Generic;
 
 namespace Simple.Monad
 {
-    public static partial class Maybe
+    public static class Maybe
     {
-        public static Maybe<T> Nothing<T>() => default(Maybe<T>);
-
         public static Maybe<T> Return<T>(T value)
-        {
-            return value != null
-                ? new Maybe<T>(value)
-                : Nothing<T>();
-        }
+            => new Maybe<T>(value);
 
-        public static Maybe<T> Return<T>(T? value)
+        public static Maybe<T> OfNullable<T>(T nullable)
+            where T : class
+            => nullable != null
+                ? Return(nullable)
+                : Maybe<T>.Nothing;
+
+        public static Maybe<T> OfNullable<T>(T? nullable)
             where T : struct
-        {
-            return value.HasValue
-                ? new Maybe<T>(value.Value)
-                : Nothing<T>();
-        }
+            => nullable.HasValue
+                ? Return(nullable.Value)
+                : Maybe<T>.Nothing;
 
         public static Maybe<T> Join<T>(this Maybe<Maybe<T>> wrapped)
-        {
-            return wrapped.SelectMany(x => x);
-        }
+            => wrapped.SelectMany(x => x);
 
         public static T OrElse<T>(this Maybe<T> maybe, T value)
-        {
-            return maybe.HasValue
+            => maybe.HasValue
                 ? maybe.UnsafeValue
                 : value;
-        }
 
         public static T OrElse<T>(this Maybe<T> maybe, Func<T> factory)
         {
@@ -42,6 +36,11 @@ namespace Simple.Monad
                 ? maybe.UnsafeValue
                 : factory();
         }
+
+        public static Maybe<TSource> Append<TSource>(this Maybe<TSource> source, Maybe<TSource> next)
+            => source.HasValue
+                ? source
+                : next;
 
         public static IEnumerable<T> AsEnumerable<T>(this Maybe<T> maybe)
         {
@@ -61,6 +60,8 @@ namespace Simple.Monad
             HasValue = true;
             Value = value;
         }
+
+        public static Maybe<T> Nothing => default(Maybe<T>);
 
         public bool HasValue { get; }
         private T Value { get; }

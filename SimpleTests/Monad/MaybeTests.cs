@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Simple.Monad
@@ -5,17 +6,18 @@ namespace Simple.Monad
     public class MaybeTests
     {
         [Fact]
-        public void MaybeReturn_WithValue_HasValue()
+        public void MaybeReturn_WithValue_ContainsValue()
         {
-            var result = Maybe.Return(1).HasValue;
-            Assert.True(result);
+            var result = Maybe.Return(1);
+
+            Assert.True(result.HasValue);
+            Assert.Equal(1, result.UnsafeValue);
         }
 
         [Fact]
-        public void MaybeReturn_WithNull_NoHasValue()
+        public void MaybeReturn_WithNull_Throws()
         {
-            var result = Maybe.Return((int?)null).HasValue;
-            Assert.False(result);
+            Assert.Throws<ArgumentNullException>(() => Maybe.Return<string>(null));
         }
 
         [Fact]
@@ -25,37 +27,10 @@ namespace Simple.Monad
             Assert.False(result);
         }
 
-        [Fact]
-        public void MaybeReturn_WithNullable_ReturnsMaybeOfNonNullable()
-        {
-            var result = Maybe.Return((int?) 42);
-            Assert.Equal(typeof(Maybe<int>), result.GetType());
-        }
-
-        [Fact]
-        public void SelectMany_WithValue_RunsFunc()
-        {
-            int i = 0;
-            var maybe = Maybe.Return(1);
-            maybe.SelectMany(x => Maybe.Return(i = x));
-
-            Assert.Equal(1, i);
-        }
-
-        [Fact]
-        public void SelectMany_WithoutValue_DoesNotRunFunc()
-        {
-            int i = 0;
-            var maybe = Maybe.Return((int?)null);
-            maybe.SelectMany(x => Maybe.Return(i = x));
-
-            Assert.Equal(0, i);
-        }
-
         [Theory]
         [InlineData(42, 42, true)]
         [InlineData(24, 42, false)]
-        public void Equality_WithValues_ReturnsValueEquality(int left, int right, bool result)
+        public void Equals_WithSomethings_ReturnsValueEquality(int left, int right, bool result)
         {
             var maybeLeft = Maybe.Return(left);
             var maybeRight = Maybe.Return(right);
@@ -65,19 +40,19 @@ namespace Simple.Monad
         }
 
         [Fact]
-        public void Equality_WithoutValues_ReturnsTrue()
+        public void Equals_WithNothings_ReturnsTrue()
         {
-            var maybeLeft = Maybe.Return((int?) null);
-            var maybeRight = Maybe.Return((int?) null);
+            var maybeLeft = Maybe<int>.Nothing;
+            var maybeRight = Maybe<int>.Nothing;
 
             var areEqual = maybeLeft == maybeRight;
             Assert.True(areEqual);
         }
 
         [Fact]
-        public void Equality_ValueAndNoValue_ReturnsFalse()
+        public void Equals_SomethingAndNothing_ReturnsFalse()
         {
-            var maybeLeft = Maybe.Return((int?)null);
+            var maybeLeft = Maybe<int>.Nothing;
             var maybeRight = Maybe.Return(3);
 
             var areEqual = maybeLeft == maybeRight;
@@ -88,29 +63,29 @@ namespace Simple.Monad
         [InlineData(42, 42, 0)]
         [InlineData(24, 42, -1)]
         [InlineData(42, 24, 1)]
-        public void Comparison_WithValues_ReturnsValueComparison(int left, int right, int result)
+        public void CompareTo_WithSomethings_ReturnsValueComparison(int left, int right, int result)
         {
-            var maybeLeft = Maybe.Return(left);
-            var maybeRight = Maybe.Return(right);
+            var mLeft = Maybe.Return(left);
+            var mRight = Maybe.Return(right);
 
-            var comparisonResult = maybeLeft.CompareTo(maybeRight);
+            var comparisonResult = mLeft.CompareTo(mRight);
             Assert.Equal(result, comparisonResult);
         }
 
         [Fact]
-        public void Comparison_WithNoValues_ReturnsEqual()
+        public void CompareTo_WithNothings_ReturnsEqual()
         {
-            var maybeLeft = Maybe.Return((int?)null);
-            var maybeRight = Maybe.Return((int?)null);
+            var left = Maybe<int>.Nothing;
+            var right = Maybe<int>.Nothing;
 
-            var comparison = maybeLeft.CompareTo(maybeRight);
+            var comparison = left.CompareTo(right);
             Assert.Equal(0, comparison);
         }
 
         [Fact]
-        public void Comparison_WithMinValueAndNoValue_NoValueIsLess()
+        public void CompareTo_WithNothingAndMinSomething_ReturnsLess()
         {
-            var maybeLeft = Maybe.Return((int?)null);
+            var maybeLeft = Maybe.OfNullable((int?)null);
             var maybeRight = Maybe.Return(int.MinValue);
 
             var comparison = maybeLeft.CompareTo(maybeRight);
@@ -118,7 +93,41 @@ namespace Simple.Monad
         }
 
         [Fact]
-        public void OrElse_WithValue_ReturnsValue()
+        public void OfNullable_WithNull_ReturnsNothing()
+        {
+            var result = Maybe.OfNullable((int?) null);
+            Assert.Equal(Maybe<int>.Nothing, result);
+        }
+
+        [Fact]
+        public void OfNullable_WithValue_ReturnsSomething()
+        {
+            var result = Maybe.OfNullable((int?) 42);
+            Assert.Equal(Maybe.Return(42), result);
+        }
+
+        [Fact]
+        public void SelectMany_WithSomething_RunsFunc()
+        {
+            int i = 0;
+            var maybe = Maybe.Return(1);
+            maybe.SelectMany(x => Maybe.Return(i = x));
+
+            Assert.Equal(1, i);
+        }
+
+        [Fact]
+        public void SelectMany_WithNothing_DoesNotRunFunc()
+        {
+            int i = 0;
+            var maybe = Maybe<int>.Nothing;
+            maybe.SelectMany(x => Maybe.Return(i = x));
+
+            Assert.Equal(0, i);
+        }
+
+        [Fact]
+        public void OrElse_WithSomething_ReturnsLeft()
         {
             var maybe = Maybe.Return(3);
 
@@ -127,9 +136,9 @@ namespace Simple.Monad
         }
 
         [Fact]
-        public void OrElse_WithNothing_ReturnsElse()
+        public void OrElse_WithNothing_ReturnsRight()
         {
-            var maybe = Maybe.Nothing<int>();
+            var maybe = Maybe<int>.Nothing;
 
             var result = maybe.OrElse(2);
             Assert.Equal(2, result);
@@ -140,16 +149,14 @@ namespace Simple.Monad
         [InlineData(2, null, 2)]
         [InlineData(null, 3, 3)]
         [InlineData(null, null, null)]
-        public void Concat_WithSuppliedValues_FirstIfHasValueOtherwiseSecond(int? a, int? b, int? expected)
+        public void Append_WithSuppliedValues_IfHasValueThenLeftElseRight(int? left, int? right, int? expected)
         {
-            var ma = Maybe.Return(a);
-            var mb = Maybe.Return(b);
+            var mLeft = Maybe.OfNullable(left);
+            var mRight = Maybe.OfNullable(right);
 
-            var mexpected = Maybe.Return(expected);
+            var result = mLeft.Append(mRight);
 
-            var result = ma.Concat(mb);
-
-            Assert.Equal(mexpected, result);
+            Assert.Equal(Maybe.OfNullable(expected), result);
         }
     }
 }
