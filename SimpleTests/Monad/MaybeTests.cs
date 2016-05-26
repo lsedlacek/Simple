@@ -5,13 +5,15 @@ namespace Simple.Monad
 {
     public class MaybeTests
     {
-        [Fact]
-        public void MaybeReturn_WithValue_ContainsValue()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(42)]
+        [InlineData(4957)]
+        public void MaybeReturn_WithValue_ContainsValue(int x)
         {
-            var result = Maybe.Return(1);
+            var result = Maybe.Return(x);
 
-            Assert.True(result.HasValue);
-            Assert.Equal(1, result.UnsafeValue);
+            Assert.Equal(x, result.Match(val => val, () => -1));
         }
 
         [Fact]
@@ -30,32 +32,32 @@ namespace Simple.Monad
         [Theory]
         [InlineData(42, 42, true)]
         [InlineData(24, 42, false)]
-        public void Equals_WithSomethings_ReturnsValueEquality(int left, int right, bool result)
+        public void Equals_WithSomethings_ReturnsValueEquality(int left, int right, bool expected)
         {
-            var maybeLeft = Maybe.Return(left);
-            var maybeRight = Maybe.Return(right);
+            var mLeft = Maybe.Return(left);
+            var mRight = Maybe.Return(right);
 
-            var areEqual = maybeLeft == maybeRight;
-            Assert.Equal(result, areEqual);
+            var areEqual = mLeft == mRight;
+            Assert.Equal(expected, areEqual);
         }
 
         [Fact]
         public void Equals_WithNothings_ReturnsTrue()
         {
-            var maybeLeft = Maybe<int>.Nothing;
-            var maybeRight = Maybe<int>.Nothing;
+            var left = Maybe<int>.Nothing;
+            var right = Maybe<int>.Nothing;
 
-            var areEqual = maybeLeft == maybeRight;
+            var areEqual = left == right;
             Assert.True(areEqual);
         }
 
         [Fact]
         public void Equals_SomethingAndNothing_ReturnsFalse()
         {
-            var maybeLeft = Maybe<int>.Nothing;
-            var maybeRight = Maybe.Return(3);
+            var left = Maybe<int>.Nothing;
+            var right = Maybe.Return(3);
 
-            var areEqual = maybeLeft == maybeRight;
+            var areEqual = left == right;
             Assert.False(areEqual);
         }
 
@@ -63,13 +65,13 @@ namespace Simple.Monad
         [InlineData(42, 42, 0)]
         [InlineData(24, 42, -1)]
         [InlineData(42, 24, 1)]
-        public void CompareTo_WithSomethings_ReturnsValueComparison(int left, int right, int result)
+        public void CompareTo_WithSomethings_ReturnsValueComparison(int left, int right, int expected)
         {
             var mLeft = Maybe.Return(left);
             var mRight = Maybe.Return(right);
 
             var comparisonResult = mLeft.CompareTo(mRight);
-            Assert.Equal(result, comparisonResult);
+            Assert.Equal(expected, comparisonResult);
         }
 
         [Fact]

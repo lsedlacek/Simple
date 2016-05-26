@@ -61,6 +61,7 @@
     <Compile Include="Misc\EnumExtensionsTests.cs" />
     <Compile Include="Monad\MaybeCollectionExtensionsTests.cs" />
     <Compile Include="Monad\MaybeTests.cs" />
+    <Compile Include="Monad\ResultTests.cs" />
     <Compile Include="Pattern\ValuePatternTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

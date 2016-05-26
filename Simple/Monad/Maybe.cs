@@ -20,6 +20,18 @@ namespace Simple.Monad
                 ? Return(nullable.Value)
                 : Maybe<T>.Nothing;
 
+        public static TResult Match<TSource, TResult>(this Maybe<TSource> maybe, Func<TSource, TResult> fValue,
+            Func<TResult> fNothing)
+        {
+            if (fValue == null) throw new ArgumentNullException(nameof(fValue));
+            if (fNothing == null) throw new ArgumentNullException(nameof(fNothing));
+
+
+            return maybe.HasValue
+                ? fValue(maybe.UnsafeValue)
+                : fNothing();
+        }
+
         public static Maybe<T> Join<T>(this Maybe<Maybe<T>> wrapped)
             => wrapped.SelectMany(x => x);
 
@@ -66,7 +78,7 @@ namespace Simple.Monad
         public bool HasValue { get; }
         private T Value { get; }
 
-        public T UnsafeValue
+        internal T UnsafeValue
         {
             get
             {
@@ -80,7 +92,7 @@ namespace Simple.Monad
         public int CompareTo(Maybe<T> other)
         {
             var flag = (HasValue ? 1 : 0)
-                | (other.HasValue ? 2 : 0);
+                       | (other.HasValue ? 2 : 0);
 
             switch (flag)
             {
@@ -95,22 +107,22 @@ namespace Simple.Monad
             }
         }
 
-        public static bool operator >(Maybe<T> left, Maybe<T> right)
+        public static bool operator>(Maybe<T> left, Maybe<T> right)
         {
             return left.CompareTo(right) > 0;
         }
 
-        public static bool operator <(Maybe<T> left, Maybe<T> right)
+        public static bool operator<(Maybe<T> left, Maybe<T> right)
         {
             return left.CompareTo(right) < 0;
         }
 
-        public static bool operator >=(Maybe<T> left, Maybe<T> right)
+        public static bool operator>=(Maybe<T> left, Maybe<T> right)
         {
             return left.CompareTo(right) >= 0;
         }
 
-        public static bool operator <=(Maybe<T> left, Maybe<T> right)
+        public static bool operator<=(Maybe<T> left, Maybe<T> right)
         {
             return left.CompareTo(right) <= 0;
         }
@@ -122,7 +134,7 @@ namespace Simple.Monad
         public bool Equals(Maybe<T> other)
         {
             var flag = (HasValue ? 1 : 0)
-                | (other.HasValue ? 2 : 0);
+                       | (other.HasValue ? 2 : 0);
 
             switch (flag)
             {
@@ -149,12 +161,12 @@ namespace Simple.Monad
                 : 0;
         }
 
-        public static bool operator ==(Maybe<T> left, Maybe<T> right)
+        public static bool operator==(Maybe<T> left, Maybe<T> right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Maybe<T> left, Maybe<T> right)
+        public static bool operator!=(Maybe<T> left, Maybe<T> right)
         {
             return !left.Equals(right);
         }

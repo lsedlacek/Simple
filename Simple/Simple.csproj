@@ -47,6 +47,8 @@
     <Compile Include="Monad\Maybe.cs" />
     <Compile Include="Monad\MaybeCollectionExtensions.cs" />
     <Compile Include="Monad\MaybeLinq.cs" />
+    <Compile Include="Monad\Result.cs" />
+    <Compile Include="Monad\ResultLinq.cs" />
     <Compile Include="Pattern\ValuePattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
